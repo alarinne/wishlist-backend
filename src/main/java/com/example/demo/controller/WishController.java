@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.WishRequest;
 import com.example.demo.dto.WishResponse;
 import com.example.demo.service.WishService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,5 +39,11 @@ public class WishController {
             @RequestBody WishRequest request
     ) {
         return wishService.updateWish(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWish(@PathVariable Long id) {
+        wishService.deleteWish(id);
+        return ResponseEntity.noContent().build();
     }
 }

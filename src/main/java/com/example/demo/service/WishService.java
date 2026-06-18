@@ -82,4 +82,12 @@ public class WishService {
                 wish.getPriority()
         );
     }
+
+    public void deleteWish(Long id) {
+        if (!wishRepository.existsById(id)) {
+            throw new RuntimeException("Wish not found");
+        }
+
+        wishRepository.deleteById(id);
+    }
 }
