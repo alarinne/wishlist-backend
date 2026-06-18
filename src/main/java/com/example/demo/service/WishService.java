@@ -7,6 +7,7 @@ import com.example.demo.entity.Wish;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WishRepository;
 import org.springframework.stereotype.Service;
+import com.example.demo.exception.WishNotFoundException;
 
 import java.util.List;
 
@@ -47,14 +48,14 @@ public class WishService {
 
     public WishResponse getWishById(Long id) {
         Wish wish = wishRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wish not found"));
+                .orElseThrow(() -> new WishNotFoundException(id));
 
         return toResponse(wish);
     }
 
     public WishResponse updateWish(Long id, WishRequest request) {
         Wish wish = wishRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Wish not found"));
+                .orElseThrow(() -> new WishNotFoundException(id));
 
         Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -85,7 +86,7 @@ public class WishService {
 
     public void deleteWish(Long id) {
         if (!wishRepository.existsById(id)) {
-            throw new RuntimeException("Wish not found");
+            throw new WishNotFoundException(id);
         }
 
         wishRepository.deleteById(id);
