@@ -4,12 +4,15 @@ import com.example.demo.dto.WishRequest;
 import com.example.demo.dto.WishResponse;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Wish;
+import com.example.demo.exception.CategoryNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WishRepository;
 import org.springframework.stereotype.Service;
 import com.example.demo.exception.WishNotFoundException;
 
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 public class WishService {
@@ -24,7 +27,7 @@ public class WishService {
 
     public WishResponse createWish(WishRequest request) {
         Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow();
+                .orElseThrow(() -> new CategoryNotFoundException(request.categoryId()));
 
         Wish wish = new Wish();
         wish.setWishName(request.wishName());
@@ -57,8 +60,8 @@ public class WishService {
         Wish wish = wishRepository.findById(id)
                 .orElseThrow(() -> new WishNotFoundException(id));
 
-        Category category = categoryRepository.findById(request.categoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException(request.categoryId()));
 
         wish.setWishName(request.wishName());
         wish.setWishPrice(request.wishPrice());
