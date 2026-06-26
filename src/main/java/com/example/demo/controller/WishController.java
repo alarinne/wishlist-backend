@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import com.example.demo.dto.WishRequest;
 import com.example.demo.dto.WishResponse;
 import com.example.demo.service.WishService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +21,12 @@ public class WishController {
     }
 
     @PostMapping
-    public WishResponse createWish(@RequestBody WishRequest request) {
-        return wishService.createWish(request);
+    public ResponseEntity<WishResponse> createWish(@Valid @RequestBody WishRequest request) {
+        WishResponse createdWish = wishService.createWish(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdWish);
     }
 
     @GetMapping
