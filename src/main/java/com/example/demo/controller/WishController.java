@@ -42,7 +42,7 @@ public class WishController {
     @PutMapping("/{id}")
     public WishResponse updateWish(
             @PathVariable Long id,
-            @RequestBody WishRequest request
+            @Valid @RequestBody WishRequest request
     ) {
         return wishService.updateWish(id, request);
     }

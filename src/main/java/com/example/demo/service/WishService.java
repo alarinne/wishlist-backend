@@ -12,8 +12,6 @@ import com.example.demo.exception.WishNotFoundException;
 
 import java.util.List;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
-
 @Service
 public class WishService {
 
