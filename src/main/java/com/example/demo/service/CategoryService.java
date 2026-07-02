@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.CategoryResponse;
 import com.example.demo.dto.CategoryRequest;
 import com.example.demo.entity.Category;
+import com.example.demo.exception.CategoryAlreadyExistsException;
 import com.example.demo.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class CategoryService {
     }
 
     public CategoryResponse createCategory(CategoryRequest request) {
+        if (categoryRepository.existsByCode(request.code())) {
+            throw new CategoryAlreadyExistsException(request.code());
+        }
+
         Category category = new Category();
 
         category.setName(request.name());
