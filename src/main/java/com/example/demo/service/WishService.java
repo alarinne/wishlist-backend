@@ -58,7 +58,7 @@ public class WishService {
         Wish wish = wishRepository.findById(id)
                 .orElseThrow(() -> new WishNotFoundException(id));
 
-        Category category = categoryRepository.findById(id)
+        Category category = categoryRepository.findById(request.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException(request.categoryId()));
 
         wish.setWishName(request.wishName());
