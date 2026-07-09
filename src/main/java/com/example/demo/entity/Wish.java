@@ -12,7 +12,9 @@ public class Wish {
     private String wishName;
     private Double wishPrice;
     private String url;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private WishStatus status;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -53,11 +55,11 @@ public class Wish {
         this.url = url;
     }
 
-    public String getStatus() {
+    public WishStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(WishStatus status) {
         this.status = status;
     }
 
