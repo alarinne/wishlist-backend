@@ -4,6 +4,7 @@ import com.example.demo.dto.WishRequest;
 import com.example.demo.dto.WishResponse;
 import com.example.demo.entity.Category;
 import com.example.demo.entity.Wish;
+import com.example.demo.entity.WishStatus;
 import com.example.demo.exception.CategoryNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WishRepository;
@@ -33,7 +34,7 @@ public class WishService {
         wish.setUrl(request.url());
         wish.setCategory(category);
         wish.setPriority(request.priority());
-        wish.setStatus("ACTIVE");
+        wish.setStatus(WishStatus.ACTIVE);
 
         Wish savedWish = wishRepository.save(wish);
 

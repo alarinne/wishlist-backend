@@ -9,15 +9,24 @@ public class Wish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long wishId;
 
+    @Column(nullable = false, length = 150)
     private String wishName;
+
+    @Column(nullable = false)
     private Double wishPrice;
+
+    @Column(length = 500)
     private String url;
-    private String status;
+
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    private WishStatus status;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @Column(nullable = false, length = 20)
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
@@ -53,11 +62,11 @@ public class Wish {
         this.url = url;
     }
 
-    public String getStatus() {
+    public WishStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(WishStatus status) {
         this.status = status;
     }
 
