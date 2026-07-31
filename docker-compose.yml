@@ -12,5 +12,19 @@ services:
     volumes:
       - wishlist_postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build: .
+    container_name: wishlist-backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8081:8081"
+
 volumes:
   wishlist_postgres_data:
