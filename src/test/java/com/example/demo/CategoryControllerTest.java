@@ -73,4 +73,14 @@ public class CategoryControllerTest {
                         .content(requestBody))
                 .andExpect(status().isConflict());
     }
+    @Test
+    void createCategory_whenBodyIsMalformed_returnsGenericBadRequest() throws Exception {
+        mockMvc.perform(post("/api/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Invalid request body"))
+                .andExpect(jsonPath("$.fieldErrors").isEmpty())
+                .andExpect(jsonPath("$.trace").doesNotExist());
+    }
 }

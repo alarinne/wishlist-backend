@@ -1,57 +1,59 @@
 package com.example.demo.controller;
 
+import com.example.demo.api.WishApi;
 import com.example.demo.dto.WishRequest;
 import com.example.demo.dto.WishResponse;
-import com.example.demo.service.WishService;
-import jakarta.validation.Valid;
+import com.example.demo.dto.WishStatusUpdateRequest;
+import com.example.demo.facade.WishFacade;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/wishes")
 @CrossOrigin(origins = "http://localhost:4200")
-public class WishController {
+public class WishController implements WishApi {
 
-    private final WishService wishService;
+    private final WishFacade wishFacade;
 
-    public WishController(WishService wishService) {
-        this.wishService = wishService;
+    public WishController(WishFacade wishFacade) {
+        this.wishFacade = wishFacade;
     }
 
-    @PostMapping
-    public ResponseEntity<WishResponse> createWish(@Valid @RequestBody WishRequest request) {
-        WishResponse createdWish = wishService.createWish(request);
+    @Override
+    public ResponseEntity<WishResponse> createWish(WishRequest request) {
+        WishResponse createdWish = wishFacade.createWish(request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdWish);
     }
 
-    @GetMapping
+    @Override
     public List<WishResponse> getAllWishes() {
-        return wishService.getAllWishes();
+        return wishFacade.getAllWishes();
     }
 
-    @GetMapping("/{id}")
-    public WishResponse getWishById(@PathVariable Long id) {
-        return wishService.getWishById(id);
+    @Override
+    public WishResponse getWishById(Long id) {
+        return wishFacade.getWishById(id);
     }
 
-    @PutMapping("/{id}")
-    public WishResponse updateWish(
-            @PathVariable Long id,
-            @Valid @RequestBody WishRequest request
-    ) {
-        return wishService.updateWish(id, request);
+    @Override
+    public WishResponse updateWish(Long id, WishRequest request) {
+        return wishFacade.updateWish(id, request);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWish(@PathVariable Long id) {
-        wishService.deleteWish(id);
+    @Override
+    public WishResponse updateWishStatus(Long id, WishStatusUpdateRequest request) {
+        return wishFacade.updateWishStatus(id, request);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteWish(Long id) {
+        wishFacade.deleteWish(id);
         return ResponseEntity.noContent().build();
     }
 }
