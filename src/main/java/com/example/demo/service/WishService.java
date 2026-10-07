@@ -9,6 +9,7 @@ import com.example.demo.exception.CategoryNotFoundException;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.WishRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.exception.WishNotFoundException;
 
 import java.util.List;
@@ -71,6 +72,16 @@ public class WishService {
         Wish updatedWish = wishRepository.save(wish);
 
         return toResponse(updatedWish);
+    }
+
+    @Transactional
+    public WishResponse updateWishStatus(Long id, WishStatus status) {
+        Wish wish = wishRepository.findById(id)
+                .orElseThrow(() -> new WishNotFoundException(id));
+
+        wish.setStatus(status);
+
+        return toResponse(wish);
     }
 
     private WishResponse toResponse(Wish wish) {
